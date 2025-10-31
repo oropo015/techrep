@@ -2,69 +2,43 @@
 {% load static %}
 
 {% block content %}
-<section class="hero">
-    <div class="container">
-        <h1 class="hero-title">The Latest in Tech & Innovation</h1>
-        <p class="hero-subtitle">Breaking news, in-depth analysis, and insider insights from the world of technology</p>
-    </div>
-</section>
-
-{% if featured_posts %}
-<section class="featured-section">
-    <div class="container">
-        <h2 class="section-title">Featured Stories</h2>
-        <div class="featured-grid">
-            {% for post in featured_posts %}
-            <article class="featured-card {% if forloop.first %}featured-card-large{% endif %}">
-                <a href="{% url 'post_detail' post.slug %}" class="card-link">
-                    {% if post.featured_image %}
-                    <div class="card-image" style="background-image: url('{{ post.featured_image.url }}');"></div>
-                    {% else %}
-                    <div class="card-image card-image-placeholder"></div>
-                    {% endif %}
-                    <div class="card-content">
-                        {% if post.category %}
-                        <span class="card-category">{{ post.category.name }}</span>
-                        {% endif %}
-                        <h3 class="card-title">{{ post.title }}</h3>
-                        <p class="card-excerpt">{{ post.excerpt }}</p>
-                        <div class="card-meta">
-                            <span class="card-author">{{ post.author.get_full_name|default:post.author.username }}</span>
-                            <span class="card-date">{{ post.published_at|date:"M d, Y" }}</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
-
 <section class="latest-section">
     <div class="container">
-        <h2 class="section-title">Latest Articles</h2>
-        <div class="articles-grid">
+        <div class="section-header">
+            <h2 class="section-title">Latest News</h2>
+            <a href="{% url 'home' %}" class="see-more-button">
+                See More
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 3L12 8L7 13M12 8H2"/>
+                </svg>
+            </a>
+        </div>
+        <div class="articles-list">
             {% for post in latest_posts %}
-            <article class="article-card">
-                <a href="{% url 'post_detail' post.slug %}" class="card-link">
-                    {% if post.featured_image %}
-                    <div class="card-image" style="background-image: url('{{ post.featured_image.url }}');"></div>
-                    {% else %}
-                    <div class="card-image card-image-placeholder"></div>
-                    {% endif %}
-                    <div class="card-content">
-                        {% if post.category %}
-                        <span class="card-category">{{ post.category.name }}</span>
+            <article class="article-item">
+                <a href="{% url 'post_detail' post.slug %}" class="article-link">
+                    <div class="article-thumbnail">
+                        {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="thumbnail-placeholder"></div>
                         {% endif %}
-                        <h3 class="card-title">{{ post.title }}</h3>
-                        <p class="card-excerpt">{{ post.excerpt }}</p>
-                        <div class="card-meta">
-                            <span class="card-author">{{ post.author.get_full_name|default:post.author.username }}</span>
-                            <span class="card-date">{{ post.published_at|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="article-content">
+                        {% if post.category %}
+                        <span class="article-category">{{ post.category.name|upper }}</span>
+                        {% endif %}
+                        <h3 class="article-headline">{{ post.title }}</h3>
+                        <div class="article-meta">
+                            <span class="article-author">{{ post.author.get_full_name|default:post.author.username }}</span>
+                            <span class="article-separator">-</span>
+                            <span class="article-time">{{ post.published_at|timesince }} ago</span>
                         </div>
                     </div>
                 </a>
+                {% if not forloop.last %}
+                <hr class="article-divider">
+                {% endif %}
             </article>
             {% empty %}
             <div class="empty-state">
@@ -74,20 +48,4 @@
         </div>
     </div>
 </section>
-
-{% if categories %}
-<section class="categories-section">
-    <div class="container">
-        <h2 class="section-title">Browse by Category</h2>
-        <div class="categories-grid">
-            {% for category in categories %}
-            <a href="{% url 'category_posts' category.slug %}" class="category-card">
-                <h3>{{ category.name }}</h3>
-                <p>{{ category.posts.count }} article{{ category.posts.count|pluralize }}</p>
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-</section>
-{% endif %}
 {% endblock %}

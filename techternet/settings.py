@@ -73,10 +73,22 @@ WSGI_APPLICATION = 'techternet.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import os
+from urllib.parse import urlparse
+
+# Parse PostgreSQL connection string
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://postgres:dGDoLlJjhlrHKUqSahposRVJYYiomRsM@shuttle.proxy.rlwy.net:42948/railway')
+
+parsed = urlparse(DATABASE_URL)
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': parsed.path[1:],  # Remove leading '/'
+        'USER': parsed.username,
+        'PASSWORD': parsed.password,
+        'HOST': parsed.hostname,
+        'PORT': parsed.port,
     }
 }
 

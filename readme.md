@@ -18,7 +18,7 @@ Techternet is a modern, responsive tech blog platform inspired by TechCrunch. Bu
 
 ### Backend (Django)
 - **Framework**: Django 5.2.7
-- **Database**: SQLite (development)
+- **Database**: PostgreSQL (production-ready)
 - **Apps**:
   - `blog`: Main app handling posts, categories, and views
 

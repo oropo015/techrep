@@ -29,11 +29,32 @@
         <div class="container">
             <nav class="nav">
                 <a href="{% url 'home' %}" class="logo">
-                    <span class="logo-tech">Tech</span><span class="logo-ternet">ternet</span>
+                    <span class="logo-icon">TC</span>
+                    <span class="logo-text">Techternet</span>
                 </a>
                 <div class="nav-links">
-                    <a href="{% url 'home' %}" class="nav-link">Home</a>
-                    <a href="/admin/" class="nav-link cta-button">Admin Panel</a>
+                    <a href="{% url 'home' %}" class="nav-link">Latest</a>
+                    <a href="{% url 'home' %}" class="nav-link">Startups</a>
+                    <a href="{% url 'home' %}" class="nav-link">Venture</a>
+                    <a href="{% url 'home' %}" class="nav-link">Security</a>
+                    <a href="{% url 'home' %}" class="nav-link">AI</a>
+                    <a href="{% url 'home' %}" class="nav-link">Apps</a>
+                    <a href="/admin/" class="nav-link">Admin</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="nav-icon" aria-label="Search">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="9" r="6"></circle>
+                            <path d="m15 15-3.5-3.5"></path>
+                        </svg>
+                    </button>
+                    <button class="nav-icon menu-toggle" aria-label="Menu">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="17" y2="6"></line>
+                            <line x1="3" y1="10" x2="17" y2="10"></line>
+                            <line x1="3" y1="14" x2="17" y2="14"></line>
+                        </svg>
+                    </button>
                 </div>
             </nav>
         </div>
@@ -47,9 +68,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <div class="logo">
-                        <span class="logo-tech">Tech</span><span class="logo-ternet">ternet</span>
-                    </div>
+                    <a href="{% url 'home' %}" class="logo">
+                        <span class="logo-icon">TC</span>
+                        <span class="logo-text">Techternet</span>
+                    </a>
                     <p class="footer-tagline">Your daily dose of tech innovation</p>
                 </div>
                 <div class="footer-links">
