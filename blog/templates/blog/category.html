@@ -1,0 +1,61 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - Techternet{% endblock %}
+{% block meta_description %}{{ category.description|default:"Browse all articles in "|add:category.name }}{% endblock %}
+
+{% block content %}
+<section class="category-header">
+    <div class="container">
+        <h1 class="category-title">{{ category.name }}</h1>
+        {% if category.description %}
+        <p class="category-description">{{ category.description }}</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="latest-section">
+    <div class="container">
+        <div class="articles-grid">
+            {% for post in page_obj %}
+            <article class="article-card">
+                <a href="{% url 'post_detail' post.slug %}" class="card-link">
+                    {% if post.featured_image %}
+                    <div class="card-image" style="background-image: url('{{ post.featured_image.url }}');"></div>
+                    {% else %}
+                    <div class="card-image card-image-placeholder"></div>
+                    {% endif %}
+                    <div class="card-content">
+                        <span class="card-category">{{ post.category.name }}</span>
+                        <h3 class="card-title">{{ post.title }}</h3>
+                        <p class="card-excerpt">{{ post.excerpt }}</p>
+                        <div class="card-meta">
+                            <span class="card-author">{{ post.author.get_full_name|default:post.author.username }}</span>
+                            <span class="card-date">{{ post.published_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            {% empty %}
+            <div class="empty-state">
+                <p>No articles in this category yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">← Previous</a>
+            {% endif %}
+            
+            <span class="pagination-info">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Next →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

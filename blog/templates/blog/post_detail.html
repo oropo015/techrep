@@ -1,0 +1,76 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - Techternet{% endblock %}
+{% block meta_description %}{{ post.meta_description }}{% endblock %}
+
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block og_description %}{{ post.excerpt }}{% endblock %}
+{% block og_tags %}
+{{ block.super }}
+{% if post.featured_image %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ post.featured_image.url }}">
+{% endif %}
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="{{ post.published_at|date:'c' }}">
+<meta property="article:author" content="{{ post.author.get_full_name|default:post.author.username }}">
+{% endblock %}
+
+{% block content %}
+<article class="post-detail">
+    <div class="container">
+        <div class="post-header">
+            {% if post.category %}
+            <a href="{% url 'category_posts' post.category.slug %}" class="post-category">{{ post.category.name }}</a>
+            {% endif %}
+            <h1 class="post-title">{{ post.title }}</h1>
+            <div class="post-meta">
+                <span class="post-author">By {{ post.author.get_full_name|default:post.author.username }}</span>
+                <span class="post-date">{{ post.published_at|date:"F d, Y" }}</span>
+                <span class="post-views">{{ post.views }} view{{ post.views|pluralize }}</span>
+            </div>
+        </div>
+
+        {% if post.featured_image %}
+        <div class="post-featured-image">
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}">
+        </div>
+        {% endif %}
+
+        <div class="post-content">
+            {{ post.content|linebreaks }}
+        </div>
+    </div>
+</article>
+
+{% if related_posts %}
+<section class="related-posts">
+    <div class="container">
+        <h2 class="section-title">Related Articles</h2>
+        <div class="articles-grid">
+            {% for related in related_posts %}
+            <article class="article-card">
+                <a href="{% url 'post_detail' related.slug %}" class="card-link">
+                    {% if related.featured_image %}
+                    <div class="card-image" style="background-image: url('{{ related.featured_image.url }}');"></div>
+                    {% else %}
+                    <div class="card-image card-image-placeholder"></div>
+                    {% endif %}
+                    <div class="card-content">
+                        {% if related.category %}
+                        <span class="card-category">{{ related.category.name }}</span>
+                        {% endif %}
+                        <h3 class="card-title">{{ related.title }}</h3>
+                        <p class="card-excerpt">{{ related.excerpt }}</p>
+                        <div class="card-meta">
+                            <span class="card-date">{{ related.published_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </a>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
